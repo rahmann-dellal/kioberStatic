@@ -5449,7 +5449,21 @@
     </script>
     <!-- Translations -->
     <style>
-      
+      /* Hide Google Translate top toolbar */
+      .goog-te-banner-frame.skiptranslate,
+      .goog-te-gadget-icon {
+        display: none !important;
+      }
+    
+      body {
+        top: 0px !important;
+        /* Prevent body shifting when toolbar is hidden */
+      }
+    
+      /* Hide the Google Translate dropdown that normally appears */
+      .goog-te-gadget {
+        display: none !important;
+      }
       .language-dropdown {
         position: relative;
         width: 150px;
