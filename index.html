@@ -198,6 +198,11 @@
                 </ul>
               </nav>
             </div>
+            <!--Translations-->
+            <div id="google_translate_element"></div>
+
+            <!--Translations-->
+
             <!-- <div class="flex items-center justify-end pr-16 lg:pr-0">
               <label
                 for="themeSwitcher"
@@ -5425,5 +5430,21 @@
         },
       });
     </script>
+    <!-- Translations -->
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: 'en',   // Your site’s original language
+            includedLanguages: 'fr,es,pl', // Languages you want to offer
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+          },
+          'google_translate_element'
+        );
+      }
+    </script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
+    <!-- Translations -->
   </body>
 </html>
