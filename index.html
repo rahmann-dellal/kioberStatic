@@ -199,7 +199,24 @@
               </nav>
             </div>
             <!--Translations-->
-            <div id="google_translate_element"></div>
+            <div id="custom-translate" class="flex items-center justify-end pr-16 lg:pr-0">
+              <div class="language-dropdown" id="langDropdown">
+                <div class="dropdown-selected">
+                  <img src="https://flagcdn.com/w20/us.png" alt="English">
+                  <span>English</span>
+                  <span class="dropdown-arrow">▼</span>
+                </div>
+                <div class="dropdown-list">
+                  <div class="dropdown-item" data-lang="en" data-flag="https://flagcdn.com/w20/us.png">English</div>
+                  <div class="dropdown-item" data-lang="fr" data-flag="https://flagcdn.com/w20/fr.png">Français</div>
+                  <div class="dropdown-item" data-lang="es" data-flag="https://flagcdn.com/w20/es.png">Español</div>
+                  <div class="dropdown-item" data-lang="pl" data-flag="https://flagcdn.com/w20/pl.png">Polski</div>
+                </div>
+              </div>
+            
+              <!-- Hidden Google Translate element -->
+              <div id="google_translate_element" style="display:none;"></div>
+              </div>
 
             <!--Translations-->
 
@@ -5431,18 +5448,133 @@
       });
     </script>
     <!-- Translations -->
-    <script type="text/javascript">
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement(
-          {
-            pageLanguage: 'en',   // Your site’s original language
-            includedLanguages: 'fr,es,pl', // Languages you want to offer
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-          },
-          'google_translate_element'
-        );
+    <style>
+      
+      .language-dropdown {
+        position: relative;
+        width: 150px;
+        user-select: none;
       }
+    
+      /* Button showing current language */
+      .dropdown-selected {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 15px;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        cursor: pointer;
+        background: #fff;
+        font-size: 15px;
+      }
+    
+      .dropdown-selected img {
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        margin-right: 8px;
+      }
+    
+      .dropdown-arrow {
+        margin-left: auto;
+        transition: transform 0.2s;
+      }
+    
+      /* Dropdown list */
+      .dropdown-list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        margin-top: 5px;
+        padding: 5px 0;
+        display: none;
+        z-index: 100;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+    
+      .dropdown-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+    
+      .dropdown-item img {
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        margin-right: 8px;
+      }
+    
+      .dropdown-item:hover {
+        background: #f0f0f0;
+      }
+    
+      /* Open state */
+      .open .dropdown-list {
+        display: block;
+      }
+    
+      .open .dropdown-arrow {
+        transform: rotate(180deg);
+      }
+    </style>
+    <script>
+      // Initialize Google Translate
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          autoDisplay: false
+        }, 'google_translate_element');
+      }
+
+      // Dropdown logic
+      const dropdown = document.getElementById("langDropdown");
+      const selected = dropdown.querySelector(".dropdown-selected");
+      const selectedText = selected.querySelector("span");
+      const selectedImg = selected.querySelector("img");
+      const list = dropdown.querySelector(".dropdown-list");
+
+      selected.addEventListener("click", () => {
+        dropdown.classList.toggle("open");
+      });
+
+      document.querySelectorAll(".dropdown-item").forEach(item => {
+        item.addEventListener("click", () => {
+          const lang = item.getAttribute("data-lang");
+          const flag = item.getAttribute("data-flag");
+          const label = item.textContent;
+
+          // Update dropdown
+          selectedImg.src = flag;
+          selectedImg.alt = label;
+          selectedText.textContent = label;
+          dropdown.classList.remove("open");
+
+          // Trigger translation
+          const select = document.querySelector(".goog-te-combo");
+          if (select) {
+            select.value = lang;
+            select.dispatchEvent(new Event("change"));
+          }
+        });
+      });
+
+      // Close dropdown if clicked outside
+      window.addEventListener("click", (e) => {
+        if (!dropdown.contains(e.target)) {
+          dropdown.classList.remove("open");
+        }
+      });
     </script>
+    
+    <!-- Google Translate API -->
     <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     
     <!-- Translations -->
